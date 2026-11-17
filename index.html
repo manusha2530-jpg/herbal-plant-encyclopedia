@@ -323,5 +323,38 @@ renderFeatured();renderPlants();
 Visit Herbal Project Website
 </a>
 </div>
+<!-- MY ACTIVITY -->
+<div style="position:fixed;bottom:20px;right:20px;z-index:9999">
+<button onclick="showActivity()" style="background:#245b42;color:white;padding:14px;border:0;border-radius:25px">
+📊 My Activity
+</button>
+</div>
+
+<div id="activityPanel" style="display:none;position:fixed;inset:10%;background:white;padding:20px;border-radius:15px;z-index:10000;overflow:auto">
+<h2>🌿 My Activity</h2>
+<div id="activityList"></div>
+<button onclick="document.getElementById('activityPanel').style.display='none'">Close</button>
+<button onclick="clearActivity()">Clear Activity</button>
+</div>
+
+<script>
+function saveActivity(action) {
+ let items=JSON.parse(localStorage.getItem("herbalActivity")||"[]");
+ items.unshift({action:action,time:new Date().toLocaleString()});
+ localStorage.setItem("herbalActivity",JSON.stringify(items.slice(0,30)));
+}
+
+function showActivity() {
+ let items=JSON.parse(localStorage.getItem("herbalActivity")||"[]");
+ document.getElementById("activityList").innerHTML=
+ items.length ? items.map(x=>`<p>🌱 ${x.action}<br><small>${x.time}</small></p>`).join("") : "No activity yet.";
+ document.getElementById("activityPanel").style.display="block";
+}
+
+function clearActivity() {
+ localStorage.removeItem("herbalActivity");
+ showActivity();
+}
+</script>
 </body>
 </html>
